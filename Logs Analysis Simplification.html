@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Three Sections</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    /* Add background image */
+    /*background-image: url('https://5.imimg.com/data5/SELLER/Default/2023/11/364079898/ZI/UB/GI/18163766/zoho-crm-software-500x500.png');
+    background-size: cover; /* Cover the entire viewport */
+    background-position: center; /* Center the background image */
+  }
+  .section {
+    padding: 50px;
+    background-color: rgba(240, 240, 240, 0.8); /* Add opacity to the background color */
+    border-bottom: 1px solid #ccc;
+  }
+  .section h2 {
+    margin-top: 0;
+  }
+  /* Styling for section 1 */
+  #section1 .field {
+    margin-bottom: 10px;
+  }
+  #section1 .field label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  #section1 .field input[type="text"],
+  #section1 .field select {
+    width: 200px;
+    margin-bottom: 5px;
+  }
+  /* Styling for section 2 and section 3 */
+  .button-container {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+  }
+  .button-container a {
+    margin-right: 10px;
+    padding: 10px 20px;
+    background-color: #00b997;
+    color: #fff;
+    text-decoration: none;
+    width: 150px;
+    text-align: center;
+  }
+  .button-container a:last-child {
+    margin-right: 0;
+  }
+  css
+/* styles to hide the number input spinner / up-down arrows */
+input[type=number] {
+    -moz-appearance: numberField;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="section" id="section1">
+  <h2>Customer Information</h2>
+  <div class="field">
+    <label for="numberField">ZUID:</label>
+    <input type="number" id="numberField" name="numberField" inputmode="numeric">
+</div>
+  <!-- Placing dropdown below the text field -->
+  <div class="field" id="dropdownField" style="display: none;">
+    <label for="dropdown">Select the DC:</label>
+    <select name="dropdown" id="dropdown">
+      <option value="-None-">-None-</option>
+      <option value="US">US</option>
+      <option value="EU">EU</option>
+      <option value="IN">IN</option>
+      <option value="AU">AU</option>
+      <option value="JP">JP</option>
+      <option value="CN">CN</option>
+      <option value="CA">CA</option>
+      <option value="SA">SA</option>
+    </select>
+  </div>
+</div>
+
+<div class="section" id="section2">
+  <h2>Mproxy Logs</h2>
+  <div class="button-container">
+    <a href="#" id="finddevice" data-params="param1=value1&param2=value2">Find Devices</a>
+    <a href="#" id="getappinitdata" data-params="param1=value1&param2=value2">Getappinitdata</a>
+    <a href="#" id="getmigrationdata" data-params="param3=value3">Getmigrationdata</a>
+    <a href="#" id="getcvrecords" data-params="param4=value4">Getcvrecords</a>
+    <a href="#" id="getmetadatainfo" data-params="param5=value5">Getmetadatainfo</a>
+  </div>
+</div>
+
+<div class="section" id="section3">
+  <h2>CRM Logs</h2>
+  <div class="button-container">
+    <a href="#" id="crm-exceptions" data-params="param6=value6">202 and 400 CRM Exceptions</a>
+    <a href="#" id="call-logs" data-params="param7=value7">Call Logs</a>
+  </div>
+</div>
+
+<script>
+  document.getElementById('numberField').addEventListener('input', function() {
+    var textFieldValue = this.value;
+    var dropdownField = document.getElementById('dropdownField');
+    
+    // Show the dropdown if the text field has a value, hide it otherwise
+    if (textFieldValue.trim() !== '') {
+      dropdownField.style.display = 'block';
+    } else {
+      dropdownField.style.display = 'none';
+    }
+  });
+
+  document.getElementById('dropdown').addEventListener('change', function() {
+    var selectedValue = this.value;
+    var zuidValue = document.getElementById('numberField').value.trim(); // Get the trimmed value of ZUID field
+
+    // Define deeplinks based on selected option
+    var deeplinks = {
+      'US': 'https://logs.zoho.com/app/36064526',
+      'EU': 'https://logs.zoho.eu/app/20000100719',
+      'IN': 'https://logs.zoho.in/app/40000000224',
+      'AU': 'https://logs.zoho.com.au/app/7000001008',
+      'JP': 'https://logs.zoho.jp/app/90000002103',
+      'CN': 'https://logs.zoho.com.cn/app/5750977',
+      'CA': 'https://logs.zohocloud.ca/app/110000003102',
+      'SA': 'https://logs.zoho.sa/app/150000003601'
+    };
+
+    // Update href values for buttons in section 2 with ZUID value
+    var section2Buttons = document.getElementById('section2').getElementsByClassName('button-container')[0].getElementsByTagName('a');
+    for (var i = 0; i < section2Buttons.length; i++) {
+        section2Buttons[i].href = deeplinks[selectedValue] + "/zlogs.zl#/zlh/MobileProxy/search/query/result/date=Last%25205%2520days&range=1-100&order=descending&query=logtype%253D%2522access%2522%2520and%2520%2520zuid%253D" + zuidValue + "%2520and%2520(request_uri%2520contains%2520%2522crm%2522%2520or%2520%2520request_uri%2520contains%2520%2522submitfeedback%2522)%2520groupby%2520_c_mproxy_device_name&timezone=Asia%252FKolkata&apiVersion=2";
+    }
+
+    // Update href values for buttons in section 3
+    var section3Buttons = document.getElementById('section3').getElementsByClassName('button-container')[0].getElementsByTagName('a');
+    for (var i = 0; i < section3Buttons.length; i++) {
+        section3Buttons[i].href = deeplinks[selectedValue] + "/zlogs.zl#/zlh/crm/search/query/result/date=Last%25205%2520days&range=1-100&order=descending&query=logtype%253D%2522access%2522%2520and%2520zuid%253D" + zuidValue + "%2520and%2520remote_service_name%2520contains%2520%2522MobileProxy%2522%2520and%2520(status%253E%253D%2520400%2520or%2520%2520status%253D202)%2520and%2520(request_uri%2520notcontains%2520%2522settings%252Fprivacy_preferences%252Fhipaa_compliance%2522%2520and%2520request_uri%2520notcontains%2520%2522settings%252Frecord_locking_configurations%2522)&timezone=Asia%252FKolkata&apiVersion=2&d=1";
+    }
+  });
+
+  // Add event listeners to buttons in section 2
+  var section2Buttons = document.getElementById('section2').getElementsByClassName('button-container')[0].getElementsByTagName('a');
+  for (var i = 0; i < section2Buttons.length; i++) {
+      section2Buttons[i].addEventListener('click', function(event) {
+          if (document.getElementById('numberField').value.trim() === '' || document.getElementById('dropdown').value === '-None-') {
+              event.preventDefault(); // Prevent the default action (following the link)
+              alert("Please enter the ZUID and DC before proceeding");
+          }
+      });
+  }
+
+  // Add event listeners to buttons in section 3
+  var section3Buttons = document.getElementById('section3').getElementsByClassName('button-container')[0].getElementsByTagName('a');
+  for (var i = 0; i < section3Buttons.length; i++) {
+      section3Buttons[i].addEventListener('click', function(event) {
+          if (document.getElementById('numberField').value.trim() === '' || document.getElementById('dropdown').value === '-None-') {
+              event.preventDefault(); // Prevent the default action (following the link)
+              alert("Please enter the ZUID and DC before proceeding");
+          }
+      });
+  }
+</script>
+
+</body>
+</html>
+
+
+<!-- https://logs.zoho.com/app/36064526/zlogs.zl#/zlh/MobileProxy/search/query/result/date=Last%25205%2520days&range=1-
+  100&order=descending&query=logtype%253D%2522access%2522%2520and%2520%2520zuid%253D764686350%2520and%2520(request_uri%2520
+  contains%2520%2522%252Fgetappinitdata%2522%2520or%2520request_uri%2520contains%2520%2522submitfeedback%2522)&timezone=Asia%252FKolkata&apiVersion=2 -->
